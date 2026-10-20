@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page not found · Xinghao Peng</title>
+  <meta name="robots" content="noindex">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f7f7f4">
+  <!-- GitHub Pages serves this file for any missing URL, so paths start at the site root -->
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script>
+    (function () {
+      var d = document.documentElement, t = null;
+      try { t = localStorage.getItem("theme"); } catch (e) {}
+      if (t !== "light" && t !== "dark") t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      d.setAttribute("data-theme", t);
+    })();
+  </script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/">
+      <img src="/assets/img/favicon.svg" alt="" width="30" height="30">
+      <span>Xinghao Peng</span>
+    </a>
+  </div>
+</header>
+<main class="container not-found">
+  <div>
+    <p class="eyebrow eyebrow--center">Error 404</p>
+    <h1>Lost the signal.</h1>
+    <p>This page doesn't exist, or it moved.</p>
+    <a class="btn btn-primary" href="/">Back to the homepage</a>
+  </div>
+</main>
+</body>
+</html>
