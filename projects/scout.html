@@ -140,76 +140,36 @@
   </section>
 
   <section class="proj-section">
-    <div class="container prose-grid">
-      <div class="prose reveal">
-        <h2>Overview</h2>
-        <p>Spatiotemporal heterogeneity in demand makes UAV deployment and coverage control hard. During the January 2025 Los Angeles wildfires, satellite observations showed fire intensity varying sharply between areas within a single day and shifting as the fire evolved. Traditional methods typically assume uniform or static demand, which leads to suboptimal deployments.</p>
-        <p>SCOUT places UAVs and controls their coverage regions to minimize a weighted cost that combines spatial distance with demand density. This improves both resource accessibility and equity across the target area.</p>
-        <h3>How it works</h3>
-        <ol class="steps">
-          <li><strong>Sequential optimization.</strong> A greedy, demand-aware seeding step. The first UAV starts at the demand-weighted center of mass of the area. Each new UAV is placed in the Voronoi region that carries the most demand and is optimized while the earlier UAVs stay fixed.</li>
-          <li><strong>Global refinement.</strong> All UAVs then move together by gradient descent. Each step moves every UAV toward the center of mass of its Voronoi region, with larger steps in regions that carry more demand, until the cost converges.</li>
-          <li><strong>Online updates.</strong> When demand changes, refinement restarts from the UAVs' current positions, so deployment and coverage adapt continuously.</li>
-        </ol>
-      </div>
-      <aside class="panel facts-card reveal" aria-label="Paper details">
-        <dl>
-          <div><dt>Venue</dt><dd>2025 IEEE 21st International Conference on Automation Science and Engineering (CASE), pp. 2103–2108</dd></div>
-          <div><dt>Presented</dt><dd>Aug 19, 2025 · Los Angeles, CA</dd></div>
-          <div><dt>Keywords</dt><dd>Heterogeneous demand · coverage control · decision-making · UAV deployment</dd></div>
-          <div><dt>Funding</dt><dd>National Science Foundation, IIS-2302834</dd></div>
-          <div><dt>DOI</dt><dd><a href="https://doi.org/10.1109/CASE58245.2025.11163795" target="_blank" rel="noopener">10.1109/CASE58245.2025.11163795</a></dd></div>
-        </dl>
-      </aside>
-    </div>
-  </section>
-
-  <section class="proj-section">
     <div class="container">
-      <h2 class="reveal">Framework</h2>
-      <!-- FIGURE SLOT. Replace the <div class="figure-slot"> with:
-           <figure><img src="../assets/img/projects/scout/framework.png" alt="SCOUT framework" style="border-radius:16px">
-           <figcaption class="cap">Your caption.</figcaption></figure> -->
-      <p class="proj-lede reveal">Sequential optimization gives a first deployment, global refinement improves it, and the tessellation is updated whenever the demand changes.</p>
-      <div class="figure-slot reveal">
-        <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
-        <strong>Fig. 2 · Online update framework</strong>
-        <span>Add <code>assets/img/projects/scout/framework.png</code></span>
+      <div class="cgc">
+        <article class="cgc-card reveal">
+          <h2><span>01</span>Challenge</h2>
+          <p>Demand for UAVs varies sharply in space and time. In the January 2025 Los Angeles wildfires, fire intensity differed greatly between areas within a single day and kept shifting as the fires evolved. A UAV fleet has to cover the whole region, concentrate where demand is high, and re-plan as the demand moves.</p>
+        </article>
+        <article class="cgc-card reveal">
+          <h2><span>02</span>Gap</h2>
+          <p>Most coverage-control methods assume uniform demand, and location-allocation models work with static, discrete demand points. Clustering methods do not define coverage boundaries, and weighted Voronoi methods can settle into nearly equal-area partitions that overserve a few hotspots while leaving diffuse demand underserved.</p>
+        </article>
+        <article class="cgc-card cgc-card--wide cgc-card--accent reveal">
+          <h2><span>03</span>Our contribution</h2>
+          <ol class="contrib">
+            <li><strong>Demand-aware cost.</strong> Deployment and coverage regions minimize one cost that weighs spatial distance by demand density, improving both resource accessibility and equity.</li>
+            <li><strong>Seeding, then refinement.</strong> A greedy step places UAVs in the highest-demand regions first. A gradient-based update then moves each UAV toward the demand-weighted center of its Voronoi region.</li>
+            <li><strong>Online updates.</strong> When demand changes, refinement restarts from the current positions, so coverage keeps up with an evolving situation. SCOUT outperforms 3D K-means and weighted Voronoi on accessibility and equity for 20 to 100 UAVs.</li>
+          </ol>
+        </article>
       </div>
     </div>
   </section>
 
   <section class="proj-section">
     <div class="container">
-      <h2 class="reveal">Results</h2>
-      <ul class="result-list reveal">
-        <li><strong>Benchmarking.</strong> On six simulated demand maps, each a mixture of 200 two-dimensional Gaussians on a 500 × 500 grid, with 20 to 100 UAVs, SCOUT beats 3D K-means and weighted Voronoi tessellation for every swarm size on both the accessibility score (the inverse of the weighted distance cost) and the equity score (the entropy of per-region accessibility).</li>
-        <li><strong>Continuous deployment.</strong> 100 UAVs start from a fixed station in one corner and follow the six demand maps as they evolve. The first deployment converges in 297 iterations, and the swarm re-converges quickly after each change in demand.</li>
-        <li><strong>Videos.</strong> The coverage process from the paper: <a href="https://youtu.be/nJRhtjwEvTg" target="_blank" rel="noopener">video 1</a> and <a href="https://youtu.be/oIisM2DDiFc" target="_blank" rel="noopener">video 2</a> (YouTube).</li>
-      </ul>
-      <div class="two-up">
-        <div class="figure-slot reveal">
-          <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
-          <strong>Fig. 4 · Accessibility and equity</strong>
-          <span>SCOUT vs. 3D K-means and weighted Voronoi, 20–100 UAVs</span>
-        </div>
-        <div class="figure-slot reveal">
-          <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
-          <strong>Fig. 5 · Coverage process of 100 UAVs</strong>
-          <span>Tessellation and UAV trajectories by iteration</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="proj-section">
-    <div class="container">
-      <h2 class="reveal">Talk</h2>
-      <figure class="talk-photo reveal">
-        <a href="../assets/img/gallery/case2025-lg.jpg" data-lightbox="talk" data-title="Presenting SCOUT at IEEE CASE 2025" data-meta="Los Angeles, CA · Aug 19, 2025">
-          <img src="../assets/img/gallery/case2025-lg.jpg" width="1600" height="1200" alt="Presenting SCOUT at IEEE CASE 2025 with the title slide on screen" loading="lazy" decoding="async">
+      <h2 class="reveal">Methodology framework</h2>
+      <figure class="paper-fig reveal paper-fig--narrow">
+        <a class="paper-fig-media" href="../assets/img/projects/scout/fig2-framework.webp" data-lightbox="figs" data-title="Fig. 2 · Online update framework" data-meta="SCOUT · IEEE CASE 2025">
+          <img src="../assets/img/projects/scout/fig2-framework.webp" width="887" height="609" alt="Flowchart: heterogeneous demand density feeds sequential optimization, initial deployment and global refinement, which produce optimized coverage control and decision support, with an online update loop as the demand evolves" loading="lazy" decoding="async">
         </a>
-        <figcaption class="cap">Presenting SCOUT at IEEE CASE 2025 in Los Angeles.</figcaption>
+        <figcaption><strong>Fig. 2.</strong> Online update framework for spatiotemporal demand heterogeneity. <span class="fig-src">From the IEEE CASE 2025 paper. © 2025 IEEE.</span></figcaption>
       </figure>
     </div>
   </section>
@@ -247,15 +207,15 @@
 </footer>
 
 <dialog class="lightbox" id="lightbox" aria-labelledby="lb-title">
-  <h2 id="lb-title" class="visually-hidden">Photo viewer</h2>
+  <h2 id="lb-title" class="visually-hidden">Image viewer</h2>
   <span class="lb-count"></span>
   <button class="lb-btn lb-close" type="button" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
-  <button class="lb-btn lb-prev" type="button" aria-label="Previous photo"><svg class="icon" aria-hidden="true"><use href="#i-chev-left"/></svg></button>
+  <button class="lb-btn lb-prev" type="button" aria-label="Previous image"><svg class="icon" aria-hidden="true"><use href="#i-chev-left"/></svg></button>
   <figure class="lb-figure">
     <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="">
     <figcaption class="lb-cap"><strong></strong><span></span></figcaption>
   </figure>
-  <button class="lb-btn lb-next" type="button" aria-label="Next photo"><svg class="icon" aria-hidden="true"><use href="#i-chev-right"/></svg></button>
+  <button class="lb-btn lb-next" type="button" aria-label="Next image"><svg class="icon" aria-hidden="true"><use href="#i-chev-right"/></svg></button>
 </dialog>
 </body>
 </html>

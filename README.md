@@ -7,7 +7,7 @@ Edit the `.html` files directly and the changes go live when you upload them.
 personal-website/
 ├── index.html              Home: about, news, research, publications, experience, awards, teaching, gallery
 ├── projects/
-│   ├── scout.html          SCOUT: UAV coverage control (video slot, figures, BibTeX)
+│   ├── scout.html          SCOUT: UAV coverage control (video slot, framework figure, BibTeX)
 │   ├── stem.html           STEM: structural embeddings for 3D designs (template for new papers)
 │   ├── heart.html          Cardiac digital twins: adaptive inverse DOE
 │   ├── wind.html           Wind power grid integration: ramp prediction to dispatch
@@ -16,7 +16,8 @@ personal-website/
 ├── assets/
 │   ├── css/style.css       All styling. Colors are the tokens at the top (light and dark)
 │   ├── js/main.js          Theme toggle, mobile menu, publication filter, BibTeX copy, photo viewer
-│   ├── img/                Profile, gallery (sm = grid, lg = full size), project images, icons
+│   ├── img/                Profile, gallery (sm = grid, lg = full size), icons
+│   │   └── projects/       The core figure of each project, from its paper (WebP)
 │   ├── videos/             Put demo videos here
 │   ├── cv/                 Xinghao_Peng_CV.pdf
 │   └── fonts/              Inter, Space Grotesk, JetBrains Mono (SIL OFL)
@@ -79,7 +80,9 @@ ffmpeg -i input.mov -c:v libx264 -crf 23 -preset slow -pix_fmt yuv420p -movflags
 
 Keep files in the repository under about 50 MB. GitHub rejects files over 100 MB, and the whole site should stay well under 1 GB.
 
-**Add a framework or result figure.** Save it as PNG or JPG, about 2000 px wide, in `assets/img/projects/<project>/` (for example `scout/`, `stem/`, `heart/`). Then replace the matching `<div class="figure-slot">` with the `<figure>` snippet in the comment above it.
+**Edit a project page.** Each project page has the same short structure: the title, three cards (**Challenge**, **Gap**, **Our contribution**), one core figure from the paper (the methodology framework), and the citation. Edit the text inside the cards directly.
+
+**Replace the core figure.** The figures are WebP files in `assets/img/projects/<project>/` (PNG and JPG work too; 1600–2000 px wide is plenty). In the `<figure class="paper-fig …">` block, change the file name in both `href` (the full-size view) and `src`, set `width` and `height` to the image's pixel size, and edit the caption. `paper-fig--narrow` or `paper-fig--medium` in the class sets the display width. The same file is used for the project's card on the home page.
 
 **Add a new project page.**
 
@@ -98,3 +101,4 @@ Keep files in the repository under about 50 MB. GitHub rejects files over 100 MB
 - Fonts: Inter, Space Grotesk and JetBrains Mono, under the SIL Open Font License 1.1 (`assets/fonts/OFL-LICENSES.txt`).
 - Icons: Lucide (ISC), Simple Icons (CC0) and Font Awesome Free (CC BY 4.0, LinkedIn icon).
 - Photos and the SCOUT poster: © Xinghao Peng.
+- Figures: taken from the papers and project reports and credited in each caption (© 2025 IEEE for SCOUT, © 2024 Elsevier Ltd. for the *Renewable Energy* paper, CC BY-NC-ND 4.0 for the *Manufacturing Letters* paper).

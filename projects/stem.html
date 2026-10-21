@@ -119,96 +119,37 @@
     </div>
   </section>
 
-  <section class="container" aria-label="Framework illustration">
-    <figure class="teaser">
-      <!-- TEASER SLOT. Replace the <div class="media-frame media-frame--art">…</div> with your framework figure:
-           <div class="media-frame"><img src="../assets/img/projects/stem/teaser.png" alt="STEM framework"></div>
-           or with a video, using the same snippets as projects/scout.html. -->
-      <div class="media-frame media-frame--art">
-        <svg class="art" viewBox="0 0 480 270" role="img" aria-label="Illustration: a 3D part drawn as a graph, mapped to an embedding vector">
-  <g class="art-grid"><path d="M0 45H480M0 90H480M0 135H480M0 180H480M0 225H480M80 0V270M160 0V270M240 0V270M320 0V270M400 0V270"/></g>
-  <g class="art-edges"><line x1="123.0" y1="129.9" x2="211.3" y2="180.9"/><line x1="70.0" y1="160.5" x2="158.3" y2="211.5"/><line x1="123.0" y1="129.9" x2="70.0" y2="160.5"/><line x1="211.3" y1="180.9" x2="211.3" y2="146.9"/><line x1="158.3" y1="211.5" x2="158.3" y2="177.5"/><line x1="211.3" y1="180.9" x2="158.3" y2="211.5"/><line x1="211.3" y1="146.9" x2="164.2" y2="119.7"/><line x1="158.3" y1="177.5" x2="111.2" y2="150.3"/><line x1="211.3" y1="146.9" x2="158.3" y2="177.5"/><line x1="164.2" y1="119.7" x2="164.2" y2="82.3"/><line x1="111.2" y1="150.3" x2="111.2" y2="112.9"/><line x1="164.2" y1="119.7" x2="111.2" y2="150.3"/><line x1="164.2" y1="82.3" x2="123.0" y2="58.5"/><line x1="111.2" y1="112.9" x2="70.0" y2="89.1"/><line x1="164.2" y1="82.3" x2="111.2" y2="112.9"/><line x1="123.0" y1="58.5" x2="123.0" y2="129.9"/><line x1="70.0" y1="89.1" x2="70.0" y2="160.5"/><line x1="123.0" y1="58.5" x2="70.0" y2="89.1"/></g>
-  <g class="art-nodes"><circle cx="123.0" cy="129.9" r="4.2"/><circle cx="211.3" cy="180.9" r="4.2"/><circle cx="211.3" cy="146.9" r="4.2"/><circle cx="164.2" cy="119.7" r="4.2"/><circle cx="164.2" cy="82.3" r="4.2"/><circle cx="123.0" cy="58.5" r="4.2"/><circle cx="70.0" cy="160.5" r="4.2"/><circle cx="158.3" cy="211.5" r="4.2"/><circle cx="158.3" cy="177.5" r="4.2"/><circle cx="111.2" cy="150.3" r="4.2"/><circle cx="111.2" cy="112.9" r="4.2"/><circle cx="70.0" cy="89.1" r="4.2"/></g>
-  <g class="art-arrow"><path d="M233 135 H376"/><path d="M368 128 L377 135 L368 142"/></g>
-  <g class="art-vec"><rect x="392" y="68.5" width="30" height="14" rx="3" style="fill-opacity:0.85"/><rect x="392" y="85.5" width="30" height="14" rx="3" style="fill-opacity:0.35"/><rect x="392" y="102.5" width="30" height="14" rx="3" style="fill-opacity:0.6"/><rect x="392" y="119.5" width="30" height="14" rx="3" style="fill-opacity:0.15"/><rect x="392" y="136.5" width="30" height="14" rx="3" style="fill-opacity:0.95"/><rect x="392" y="153.5" width="30" height="14" rx="3" style="fill-opacity:0.45"/><rect x="392" y="170.5" width="30" height="14" rx="3" style="fill-opacity:0.7"/><rect x="392" y="187.5" width="30" height="14" rx="3" style="fill-opacity:0.25"/></g>
-  <text x="407" y="225.0" class="art-label" text-anchor="middle">z</text>
-</svg>
-        <span class="media-badge media-badge--light"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>Framework figure · coming soon</span>
-      </div>
-      <figcaption class="cap">Placeholder illustration: a 3D part read as a graph and mapped to an embedding. The paper's Fig. 2 shows the full flowchart.</figcaption>
-    </figure>
-  </section>
-
-  <section class="proj-section">
-    <div class="container prose-grid">
-      <div class="prose reveal">
-        <h2>Overview</h2>
-        <p>A self-organizing graph represents a 3D design as a sparse matrix, which opens complex geometry to graph theory. Few studies, however, have distilled intrinsic shape characteristics from these matrices to match similar geometric structures.</p>
-        <p>STEM is a feature-learning framework that encodes each sparse matrix into a STructural EMbedding for matching and retrieving 3D designs across categories such as vehicles, prosthetics and airplanes. The aim is a searchable repository of 3D designs that carries accumulated design knowledge into manufacturing analytics, for example reusing validated support structures and toolpath settings in additive manufacturing.</p>
-        <h3>How it works</h3>
-        <ol class="steps">
-          <li><strong>Self-organizing graph.</strong> Each design is voxelized, nearby voxels are connected into a sparse adjacency matrix, and the graph settles under a spring–electrical model until its energy reaches a steady state.</li>
-          <li><strong>Graph signature.</strong> Permutation-invariant global patterns (degree and clustering histograms, Laplacian and adjacency spectra, shortest paths, centrality moments and adjacency-matrix traces) plus an 11-dimensional feature vector for every node.</li>
-          <li><strong>Dual-channel encoder.</strong> A graph attention (GAT) branch learns local patterns from the node features, and an MLP branch fuses them with the global signature into a 128-dimensional STEM.</li>
-          <li><strong>Hierarchical loss.</strong> Three levels pull variants of the same design together, keep subcategories compact and push main categories apart, so the embedding is robust to rotation and node relabeling.</li>
-        </ol>
-      </div>
-      <aside class="panel facts-card reveal" aria-label="Paper details">
-        <dl>
-          <div><dt>Journal</dt><dd><em>Manufacturing Letters</em> 49 (2026): 1483–1493 · open access</dd></div>
-          <div><dt>Conference</dt><dd>54th SME North American Manufacturing Research Conference (NAMRC 54) · The Penn Stater, State College, PA</dd></div>
-          <div><dt>Keywords</dt><dd>Structural embedding · graph representation · structural pattern matching · 3D design retrieval</dd></div>
-          <div><dt>Funding</dt><dd>National Science Foundation, CMMI-2531899</dd></div>
-          <div><dt>DOI</dt><dd><a href="https://doi.org/10.1016/j.mfglet.2026.08.054" target="_blank" rel="noopener">10.1016/j.mfglet.2026.08.054</a></dd></div>
-        </dl>
-      </aside>
-    </div>
-  </section>
-
   <section class="proj-section">
     <div class="container">
-      <h2 class="reveal">Framework</h2>
-      <p class="proj-lede reveal">3D designs become self-organizing graphs, a dual-channel encoder trained with a hierarchical loss maps them to STEMs, and the embeddings support matching and clustering that hold up under node, edge and permutation variation.</p>
-      <div class="figure-slot reveal">
-        <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
-        <strong>Fig. 2 · Flowchart of the STEM methodology</strong>
-        <span>Add <code>assets/img/projects/stem/framework.png</code></span>
+      <div class="cgc">
+        <article class="cgc-card reveal">
+          <h2><span>01</span>Challenge</h2>
+          <p>Manufacturers keep large repositories of 3D designs, and reusing what was learned on earlier parts, such as validated support structures and toolpath settings in additive manufacturing, starts with finding structurally similar designs. Self-organizing graphs represent each design as a sparse matrix, which opens complex geometry to graph theory.</p>
+        </article>
+        <article class="cgc-card reveal">
+          <h2><span>02</span>Gap</h2>
+          <p>Few methods distill shape characteristics from these sparse matrices for matching. Direct graph matching is NP-hard and does not scale to large repositories, extrinsic descriptors such as spherical harmonics or PCA are costly to align and sensitive to voxelization, and the same part gives different matrices under rotation and node relabeling.</p>
+        </article>
+        <article class="cgc-card cgc-card--wide cgc-card--accent reveal">
+          <h2><span>03</span>Our contribution</h2>
+          <ol class="contrib">
+            <li><strong>STEM framework.</strong> Maps self-organizing graphs into a compact embedding space where similarity is computed directly, enabling repository-scale matching and retrieval.</li>
+            <li><strong>Dual-channel encoder.</strong> A global channel summarizes the overall structure, a graph-attention channel captures neighborhood-level patterns, and an MLP fuses both into a 128-dimensional STEM.</li>
+            <li><strong>Hierarchical loss.</strong> Pulls variants of the same design together, keeps subcategories compact and pushes main categories apart, so the embedding is robust to rotation and node relabeling. It reaches 92.9% main-category accuracy on Princeton Shape Benchmark designs, against 70–83% for standard classifiers.</li>
+          </ol>
+        </article>
       </div>
     </div>
   </section>
 
   <section class="proj-section">
     <div class="container">
-      <h2 class="reveal">Results</h2>
-      <p class="proj-lede reveal">Two datasets from the Princeton Shape Benchmark: 210 designs in 14 main categories and 21 subcategories, and 131 designs in 8 main categories and 12 subcategories.</p>
-      <ul class="result-list reveal">
-        <li><strong>Robust to rotation and relabeling.</strong> With 50 random rotation and permutation variants per design, 95.8% and 93.9% of unseen variants land within their design's acceptance radius on the two datasets, compared with 92.1% and 91.4% without the GAT branch.</li>
-        <li><strong>Label matching.</strong> 92.9% main-category and 90.2% subcategory accuracy on Dataset 1, against roughly 70–83% for random forest, softmax, SVM and XGBoost trained directly on the raw global signature vectors.</li>
-        <li><strong>Retrieval.</strong> 87.5% subcategory mean average precision on Dataset 1, compared with 82.3% for the MLP-only ablation.</li>
-      </ul>
-      <div class="two-up">
-        <div class="figure-slot reveal">
-          <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
-          <strong>Fig. 6 · STEM similarity matrix</strong>
-          <span>Blocks by main category and subcategory</span>
-        </div>
-        <div class="figure-slot reveal">
-          <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
-          <strong>Fig. 7 · 2D projection of test STEMs</strong>
-          <span>Designs colored by subcategory</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="proj-section">
-    <div class="container">
-      <h2 class="reveal">Talk</h2>
-      <figure class="talk-photo reveal">
-        <a href="../assets/img/gallery/namrc-lg.jpg" data-lightbox="talk" data-title="Presenting STEM at NAMRC 54" data-meta="The Penn Stater, State College, PA · 2026">
-          <img src="../assets/img/gallery/namrc-lg.jpg" width="1600" height="1200" alt="Presenting the STEM title slide at NAMRC 54" loading="lazy" decoding="async">
+      <h2 class="reveal">Methodology framework</h2>
+      <figure class="paper-fig reveal paper-fig--medium">
+        <a class="paper-fig-media" href="../assets/img/projects/stem/fig2-flowchart.webp" data-lightbox="figs" data-title="Figure 2 · STEM methodology" data-meta="STEM · Manufacturing Letters 2026">
+          <img src="../assets/img/projects/stem/fig2-flowchart.webp" width="1891" height="1154" alt="Flowchart: 3D designs, self-organizing graphs, dual-channel encoder, structural embeddings, variation robustness, and matching and clustering" loading="lazy" decoding="async">
         </a>
-        <figcaption class="cap">Presenting STEM at NAMRC 54, The Penn Stater, State College, PA.</figcaption>
+        <figcaption><strong>Figure 2.</strong> Flowchart of the proposed structural embedding methodology. <span class="fig-src">From the <em>Manufacturing Letters</em> paper (open access, CC BY-NC-ND 4.0).</span></figcaption>
       </figure>
     </div>
   </section>
@@ -247,15 +188,15 @@
 </footer>
 
 <dialog class="lightbox" id="lightbox" aria-labelledby="lb-title">
-  <h2 id="lb-title" class="visually-hidden">Photo viewer</h2>
+  <h2 id="lb-title" class="visually-hidden">Image viewer</h2>
   <span class="lb-count"></span>
   <button class="lb-btn lb-close" type="button" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
-  <button class="lb-btn lb-prev" type="button" aria-label="Previous photo"><svg class="icon" aria-hidden="true"><use href="#i-chev-left"/></svg></button>
+  <button class="lb-btn lb-prev" type="button" aria-label="Previous image"><svg class="icon" aria-hidden="true"><use href="#i-chev-left"/></svg></button>
   <figure class="lb-figure">
     <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="">
     <figcaption class="lb-cap"><strong></strong><span></span></figcaption>
   </figure>
-  <button class="lb-btn lb-next" type="button" aria-label="Next photo"><svg class="icon" aria-hidden="true"><use href="#i-chev-right"/></svg></button>
+  <button class="lb-btn lb-next" type="button" aria-label="Next image"><svg class="icon" aria-hidden="true"><use href="#i-chev-right"/></svg></button>
 </dialog>
 </body>
 </html>
