@@ -7,8 +7,11 @@ Edit the `.html` files directly and the changes go live when you upload them.
 personal-website/
 ├── index.html              Home: about, news, research, publications, experience, awards, teaching, gallery
 ├── projects/
-│   ├── scout.html          Project page (video slot, framework and results figures, BibTeX)
-│   └── stem.html           Project page, also the template for new projects
+│   ├── scout.html          SCOUT: UAV coverage control (video slot, figures, BibTeX)
+│   ├── stem.html           STEM: structural embeddings for 3D designs (template for new papers)
+│   ├── heart.html          Cardiac digital twins: adaptive inverse DOE
+│   ├── wind.html           Wind power grid integration: ramp prediction to dispatch
+│   └── port.html           Berth and quay-crane allocation at Yangshan Port
 ├── 404.html                "Page not found" page
 ├── assets/
 │   ├── css/style.css       All styling. Colors are the tokens at the top (light and dark)
@@ -44,15 +47,15 @@ git remote add origin https://github.com/USERNAME/USERNAME.github.io.git
 git push -u origin main
 ```
 
-## Before you publish: placeholders to fill
+## Placeholders still to fill
 
 Search the HTML for `TODO` and `is-todo`.
 
-- [ ] **GitHub username.** The site assumes `jeremypxh`. If yours differs, find and replace `jeremypxh` in `index.html` and `projects/*.html`.
-- [ ] **Profile links** (`index.html`, hero section). Paste your Google Scholar, LinkedIn and ORCID URLs into `href="#"` and delete `is-todo` from each link's `class`. Delete any link you don't use.
+- [x] **GitHub username:** `jeremypxh`. It's used in the preview tags and the GitHub links.
+- [x] **Research text:** the summaries, project pages and BibTeX follow the papers in `CV/paper` and the project documents in `CV/projects`.
+- [x] **Profile links:** GitHub, Google Scholar and LinkedIn are filled in (hero and footer).
 - [ ] **Service** (`index.html`, "Teaching, talks & service"). Replace the dashed box with your reviewing or committee roles.
-- [ ] **STEM abstract** (`projects/stem.html`). Replace the dashed box with the abstract or a short summary.
-- [ ] **Check the wording.** The research summaries were written from your CV and paper titles. Check the "Summer 2026" months in News and the "Open to research internships · Summer 2027" banner.
+- [ ] **News months.** NAMRC 54 and IEEE CASE 2026 are listed as "Summer 2026". Replace them with the exact months if you like.
 
 ## Common updates
 
@@ -76,7 +79,7 @@ ffmpeg -i input.mov -c:v libx264 -crf 23 -preset slow -pix_fmt yuv420p -movflags
 
 Keep files in the repository under about 50 MB. GitHub rejects files over 100 MB, and the whole site should stay well under 1 GB.
 
-**Add a framework or result figure.** Save it as PNG or JPG, about 2000 px wide, in `assets/img/projects/scout/` (or `stem/`). Then replace the matching `<div class="figure-slot">` with the `<figure>` snippet in the comment above it.
+**Add a framework or result figure.** Save it as PNG or JPG, about 2000 px wide, in `assets/img/projects/<project>/` (for example `scout/`, `stem/`, `heart/`). Then replace the matching `<div class="figure-slot">` with the `<figure>` snippet in the comment above it.
 
 **Add a new project page.**
 

@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>STEM: Graph Representation of 3D Designs · Xinghao Peng</title>
-  <meta name="description" content="STEM represents 3D designs as graphs and learns structural embeddings for machine learning on design data. Manufacturing Letters 2026, NAMRC 54. Paper, framework and citation.">
+  <title>STEM: Structural Embeddings for 3D Design Retrieval · Xinghao Peng</title>
+  <meta name="description" content="STEM encodes self-organizing graphs of 3D designs into structural embeddings for matching and retrieval. Manufacturing Letters 2026, NAMRC 54. Paper, method, results and citation.">
   <meta name="author" content="Xinghao Peng">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f7f7f4">
   <link rel="canonical" href="https://jeremypxh.github.io/projects/stem.html">
   <meta property="og:type" content="article">
   <meta property="og:title" content="STEM: STructural EMbedding for Graph Representation of 3D Designs">
-  <meta property="og:description" content="Graph representations of 3D designs. Manufacturing Letters 2026 · NAMRC 54.">
+  <meta property="og:description" content="Structural embeddings for matching and retrieving 3D designs. Manufacturing Letters 2026 · NAMRC 54.">
   <meta property="og:url" content="https://jeremypxh.github.io/projects/stem.html">
   <meta property="og:image" content="https://jeremypxh.github.io/assets/img/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
@@ -135,7 +135,7 @@
 </svg>
         <span class="media-badge media-badge--light"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>Framework figure · coming soon</span>
       </div>
-      <figcaption class="cap">Placeholder illustration: a 3D part read as a graph and mapped to an embedding.</figcaption>
+      <figcaption class="cap">Placeholder illustration: a 3D part read as a graph and mapped to an embedding. The paper's Fig. 2 shows the full flowchart.</figcaption>
     </figure>
   </section>
 
@@ -143,15 +143,22 @@
     <div class="container prose-grid">
       <div class="prose reveal">
         <h2>Overview</h2>
-        <p>STEM (STructural EMbedding) represents 3D designs as graphs and learns embeddings of their structure, so that machine-learning models can work with design geometry in a compact, structure-aware form.</p>
-        <!-- TODO: replace this box with the paper's abstract (or a short plain-language summary) -->
-        <p class="todo">Paste the abstract or a short summary of the paper here: the problem, how STEM builds the graph and the embedding, and the main result.</p>
+        <p>A self-organizing graph represents a 3D design as a sparse matrix, which opens complex geometry to graph theory. Few studies, however, have distilled intrinsic shape characteristics from these matrices to match similar geometric structures.</p>
+        <p>STEM is a feature-learning framework that encodes each sparse matrix into a STructural EMbedding for matching and retrieving 3D designs across categories such as vehicles, prosthetics and airplanes. The aim is a searchable repository of 3D designs that carries accumulated design knowledge into manufacturing analytics, for example reusing validated support structures and toolpath settings in additive manufacturing.</p>
+        <h3>How it works</h3>
+        <ol class="steps">
+          <li><strong>Self-organizing graph.</strong> Each design is voxelized, nearby voxels are connected into a sparse adjacency matrix, and the graph settles under a spring–electrical model until its energy reaches a steady state.</li>
+          <li><strong>Graph signature.</strong> Permutation-invariant global patterns (degree and clustering histograms, Laplacian and adjacency spectra, shortest paths, centrality moments and adjacency-matrix traces) plus an 11-dimensional feature vector for every node.</li>
+          <li><strong>Dual-channel encoder.</strong> A graph attention (GAT) branch learns local patterns from the node features, and an MLP branch fuses them with the global signature into a 128-dimensional STEM.</li>
+          <li><strong>Hierarchical loss.</strong> Three levels pull variants of the same design together, keep subcategories compact and push main categories apart, so the embedding is robust to rotation and node relabeling.</li>
+        </ol>
       </div>
       <aside class="panel facts-card reveal" aria-label="Paper details">
         <dl>
-          <div><dt>Journal</dt><dd><em>Manufacturing Letters</em> 49 (2026): 1483–1493</dd></div>
-          <div><dt>Conference</dt><dd>NAMRC 54 · The Penn Stater, State College, PA</dd></div>
-          <div><dt>Topics</dt><dd>Graph learning · 3D design · manufacturing</dd></div>
+          <div><dt>Journal</dt><dd><em>Manufacturing Letters</em> 49 (2026): 1483–1493 · open access</dd></div>
+          <div><dt>Conference</dt><dd>54th SME North American Manufacturing Research Conference (NAMRC 54) · The Penn Stater, State College, PA</dd></div>
+          <div><dt>Keywords</dt><dd>Structural embedding · graph representation · structural pattern matching · 3D design retrieval</dd></div>
+          <div><dt>Funding</dt><dd>National Science Foundation, CMMI-2531899</dd></div>
           <div><dt>DOI</dt><dd><a href="https://doi.org/10.1016/j.mfglet.2026.08.054" target="_blank" rel="noopener">10.1016/j.mfglet.2026.08.054</a></dd></div>
         </dl>
       </aside>
@@ -161,9 +168,10 @@
   <section class="proj-section">
     <div class="container">
       <h2 class="reveal">Framework</h2>
+      <p class="proj-lede reveal">3D designs become self-organizing graphs, a dual-channel encoder trained with a hierarchical loss maps them to STEMs, and the embeddings support matching and clustering that hold up under node, edge and permutation variation.</p>
       <div class="figure-slot reveal">
         <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
-        <strong>Framework figure</strong>
+        <strong>Fig. 2 · Flowchart of the STEM methodology</strong>
         <span>Add <code>assets/img/projects/stem/framework.png</code></span>
       </div>
     </div>
@@ -172,16 +180,22 @@
   <section class="proj-section">
     <div class="container">
       <h2 class="reveal">Results</h2>
+      <p class="proj-lede reveal">Two datasets from the Princeton Shape Benchmark: 210 designs in 14 main categories and 21 subcategories, and 131 designs in 8 main categories and 12 subcategories.</p>
+      <ul class="result-list reveal">
+        <li><strong>Robust to rotation and relabeling.</strong> With 50 random rotation and permutation variants per design, 95.8% and 93.9% of unseen variants land within their design's acceptance radius on the two datasets, compared with 92.1% and 91.4% without the GAT branch.</li>
+        <li><strong>Label matching.</strong> 92.9% main-category and 90.2% subcategory accuracy on Dataset 1, against roughly 70–83% for random forest, softmax, SVM and XGBoost trained directly on the raw global signature vectors.</li>
+        <li><strong>Retrieval.</strong> 87.5% subcategory mean average precision on Dataset 1, compared with 82.3% for the MLP-only ablation.</li>
+      </ul>
       <div class="two-up">
         <div class="figure-slot reveal">
           <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
-          <strong>Result figure</strong>
-          <span>e.g. embedding visualization</span>
+          <strong>Fig. 6 · STEM similarity matrix</strong>
+          <span>Blocks by main category and subcategory</span>
         </div>
         <div class="figure-slot reveal">
           <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
-          <strong>Comparison</strong>
-          <span>e.g. STEM versus baseline representations</span>
+          <strong>Fig. 7 · 2D projection of test STEMs</strong>
+          <span>Designs colored by subcategory</span>
         </div>
       </div>
     </div>
@@ -216,7 +230,7 @@
       </div>
       <div class="proj-links proj-links--end">
         <a class="btn" href="../index.html#research"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>All research</a>
-        <a class="btn btn-ghost" href="scout.html">Next: SCOUT<svg class="icon" aria-hidden="true"><use href="#i-chev-right"/></svg></a>
+        <a class="btn btn-ghost" href="heart.html">Next: Cardiac digital twins<svg class="icon" aria-hidden="true"><use href="#i-chev-right"/></svg></a>
       </div>
     </div>
   </section>

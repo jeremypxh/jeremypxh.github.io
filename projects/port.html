@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Berth and Quay-Crane Allocation · Xinghao Peng</title>
+  <meta name="description" content="Integrated berth and quay-crane allocation for the Yangshan Port Phase IV automated container terminal with mixed-integer programming, particle swarm optimization and differential evolution.">
+  <meta name="author" content="Xinghao Peng">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f7f7f4">
+  <link rel="canonical" href="https://jeremypxh.github.io/projects/port.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Berth and Quay-Crane Allocation">
+  <meta property="og:description" content="Integrated berth and quay-crane allocation for an automated container terminal.">
+  <meta property="og:url" content="https://jeremypxh.github.io/projects/port.html">
+  <meta property="og:image" content="https://jeremypxh.github.io/assets/img/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../assets/img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script>
+    (function () {
+      var d = document.documentElement, t = null;
+      d.classList.add("js");
+      try { t = localStorage.getItem("theme"); } catch (e) {}
+      if (t !== "light" && t !== "dark") t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      d.setAttribute("data-theme", t);
+    })();
+  </script>
+  <script src="../assets/js/main.js" defer></script>
+</head>
+<body>
+<!-- icon sprite:start (generated, do not edit) -->
+<svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false">
+<!-- Icons: Lucide (ISC), Simple Icons (CC0), Font Awesome Free (CC BY 4.0) -->
+<symbol id="i-github" viewBox="0 0 24 24"><g fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></g></symbol>
+<symbol id="i-scholar" viewBox="0 0 24 24"><g fill="currentColor"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"></path></g></symbol>
+<symbol id="i-orcid" viewBox="0 0 24 24"><g fill="currentColor"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.025-5.325 5.025h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-2.016-1.284-3.722-4.097-3.722h-2.222z"></path></g></symbol>
+<symbol id="i-youtube" viewBox="0 0 24 24"><g fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path></g></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></g></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></g></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></g></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></g></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></g></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></g></symbol>
+<symbol id="i-arrow-up-right" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></g></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"></polygon></g></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></g></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></g></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></g></symbol>
+<symbol id="i-award" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path><circle cx="12" cy="8" r="6"></circle></g></symbol>
+<symbol id="i-arrow-left" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></g></symbol>
+<symbol id="i-chev-left" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></g></symbol>
+<symbol id="i-chev-right" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></g></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></g></symbol>
+<symbol id="i-grad" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"></path><path d="M22 10v6"></path><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path></g></symbol>
+<symbol id="i-briefcase" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></g></symbol>
+<symbol id="i-mic" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" x2="12" y1="19" y2="22"></line></g></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></g></symbol>
+<symbol id="i-code" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></g></symbol>
+<symbol id="i-slides" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h20"></path><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"></path><path d="m7 21 5-5 5 5"></path></g></symbol>
+<symbol id="i-image" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></g></symbol>
+<symbol id="i-video" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"></path><rect x="2" y="6" width="14" height="12" rx="2"></rect></g></symbol>
+<symbol id="i-arrow-up" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></g></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></g></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></g></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></g></symbol>
+<symbol id="i-linkedin" viewBox="0 0 448 512"><g fill="currentColor"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"></path></g></symbol>
+</svg>
+<!-- icon sprite:end -->
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="../index.html">
+      <img src="../assets/img/favicon.svg" alt="" width="30" height="30">
+      <span>Xinghao Peng</span>
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Primary">
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#news">News</a>
+      <a href="../index.html#research" class="is-active">Research</a>
+      <a href="../index.html#publications">Publications</a>
+      <a href="../index.html#experience">Experience</a>
+      <a href="../index.html#awards">Awards</a>
+      <a href="../index.html#teaching">Teaching</a>
+      <a href="../index.html#gallery">Gallery</a>
+    </nav>
+    <div class="header-actions">
+      <a class="btn btn-sm header-cv" href="../assets/cv/Xinghao_Peng_CV.pdf" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-file"/></svg>CV</a>
+      <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Switch to dark theme">
+        <svg class="icon i-moon" aria-hidden="true"><use href="#i-moon"/></svg>
+        <svg class="icon i-sun" aria-hidden="true"><use href="#i-sun"/></svg>
+      </button>
+      <button class="icon-btn menu-toggle" type="button" data-menu-toggle aria-controls="site-nav" aria-expanded="false" aria-label="Menu">
+        <svg class="icon i-open" aria-hidden="true"><use href="#i-menu"/></svg>
+        <svg class="icon i-close" aria-hidden="true"><use href="#i-x"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="proj-hero">
+    <div class="container">
+      <a class="back-link" href="../index.html#research"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>All research</a>
+      <p class="eyebrow">Shanghai Jiao Tong University · 2021</p>
+      <h1 class="proj-title"><span class="acc">Integrated Berth and Quay-Crane Allocation</span> at Yangshan Port Phase IV</h1>
+      <p class="proj-authors"><a href="../index.html">Xinghao Peng</a> · advised by Prof. Wei Qin</p>
+      <p class="proj-affil">School of Mechanical Engineering · Shanghai Jiao Tong University</p>
+    </div>
+  </section>
+
+  <section class="container" aria-label="Framework illustration">
+    <figure class="teaser">
+      <div class="media-frame media-frame--art">
+        <svg class="art" viewBox="0 0 480 270" role="img" aria-label="Illustration: a berth-time plan with vessel blocks along the quay and quay cranes above">
+  <g class="art-grid"><path d="M0 45H480M0 90H480M0 135H480M0 180H480M0 225H480M80 0V270M160 0V270M240 0V270M320 0V270M400 0V270"/></g>
+  <g class="art-blades"><path d="M58 54 V30 M49 30 H72 M49 30 L58 40"/><path d="M104 54 V30 M95 30 H118 M95 30 L104 40"/><path d="M150 54 V30 M141 30 H164 M141 30 L150 40"/><path d="M196 54 V30 M187 30 H210 M187 30 L196 40"/><path d="M242 54 V30 M233 30 H256 M233 30 L242 40"/><path d="M288 54 V30 M279 30 H302 M279 30 L288 40"/><path d="M334 54 V30 M325 30 H348 M325 30 L334 40"/><path d="M380 54 V30 M371 30 H394 M371 30 L380 40"/><path d="M426 54 V30 M417 30 H440 M417 30 L426 40"/></g>
+  <g class="art-edges"><path d="M40 60 H450" style="stroke-width:2.2"/><path d="M40 66 V256"/></g>
+  <g class="art-vec"><rect x="48.2" y="79.0" width="123.0" height="54.0" rx="5" style="fill-opacity:0.18"/><rect x="187.6" y="73.6" width="90.2" height="39.6" rx="5" style="fill-opacity:0.28"/><rect x="302.4" y="84.4" width="131.2" height="61.2" rx="5" style="fill-opacity:0.38"/><rect x="64.6" y="145.6" width="106.6" height="50.4" rx="5" style="fill-opacity:0.18"/><rect x="187.6" y="124.0" width="98.4" height="46.8" rx="5" style="fill-opacity:0.28"/><rect x="310.6" y="160.0" width="114.8" height="54.0" rx="5" style="fill-opacity:0.38"/><rect x="187.6" y="185.2" width="106.6" height="46.8" rx="5" style="fill-opacity:0.18"/><rect x="48.2" y="206.8" width="90.2" height="36.0" rx="5" style="fill-opacity:0.28"/></g>
+  <text x="450" y="254" class="art-label" text-anchor="end">berth position</text>
+</svg>
+        <span class="media-badge media-badge--light"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>Framework figure · coming soon</span>
+      </div>
+      <figcaption class="cap">Placeholder illustration: a berth-time plan, with vessels as blocks along the quay and quay cranes above.</figcaption>
+    </figure>
+  </section>
+
+  <section class="proj-section">
+    <div class="container prose-grid">
+      <div class="prose reveal">
+        <h2>Overview</h2>
+        <p>Phase IV of Shanghai's Yangshan Port is an automated container terminal. Its berth and quay-crane plans covered short time spans, allocated berths and cranes separately and relied on manual planning, which limited the efficiency of the whole port.</p>
+        <p>This project plans over longer horizons, allocates berths and quay cranes together, and uses heuristic algorithms to produce plans quickly. It was part of a larger effort on dynamic berth–crane allocation driven by predicted vessel arrival times; my part covered the integrated allocation model and the solution algorithms.</p>
+        <h3>How it works</h3>
+        <ol class="steps">
+          <li><strong>Integrated MIP model.</strong> A mixed-integer program couples continuous berth allocation with quay-crane assignment and adds constraints specific to Phase IV operations. Its lexicographic objective first minimizes the vessels' total time at berth, then quay-crane movements. Gurobi solves it and returns berth and crane plans together.</li>
+          <li><strong>Analysis.</strong> On a test instance built from historical vessel data, a parameter sweep finds a reasonable range for the penalty on berthing away from a vessel's preferred position, and sensitivity tests vary the number of quay cranes and the container workload. Solving two consecutive periods jointly lowers the total time at berth compared with solving them separately, at a much longer solve time, which motivates a rolling time-window scheme for longer horizons.</li>
+          <li><strong>Heuristic search.</strong> An S × (T + 3) encoding represents the whole plan, with a decoding step that assigns crane numbers, constraint-aware initialization, and a fitness built from the objective plus constraint-violation penalties. Particle swarm optimization (PSO) and differential evolution (DE) search the plans, improved by a linearly decreasing inertia weight and an adaptive scaling factor.</li>
+        </ol>
+      </div>
+      <aside class="panel facts-card reveal" aria-label="Project details">
+        <dl>
+          <div><dt>Setting</dt><dd>Yangshan Port Phase IV automated container terminal, Shanghai</dd></div>
+          <div><dt>Methods</dt><dd>Mixed-integer programming (Gurobi) · particle swarm optimization · differential evolution</dd></div>
+          <div><dt>Keywords</dt><dd>Berth–crane allocation · mixed integer programming · particle swarm optimization · differential evolution</dd></div>
+          <div><dt>Advisor</dt><dd>Prof. Wei Qin</dd></div>
+        </dl>
+      </aside>
+    </div>
+  </section>
+
+  <section class="proj-section">
+    <div class="container">
+      <h2 class="reveal">Results</h2>
+      <p class="proj-lede reveal">Test instances with 9 vessels over 100 time units, 15 vessels over 300 and 42 vessels over 600, where one time unit is half an hour.</p>
+      <ul class="result-list reveal">
+        <li><strong>Speed.</strong> On the smallest instance, PSO and DE cut solve time by 95% and 94% compared with the Gurobi MIP, while staying within 6–9% of its solution.</li>
+        <li><strong>Scale.</strong> On the larger instances the MIP's solve time becomes impractical, while PSO and DE still return plans quickly, with PSO the fastest.</li>
+        <li><strong>Improvements.</strong> On the 42-vessel instance, the adaptive scaling factor cuts DE's solve time by a further 7%, and the decreasing inertia weight raises PSO's solution quality by about 1% at a slightly longer solve time.</li>
+      </ul>
+      <div class="two-up">
+        <div class="figure-slot reveal">
+          <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
+          <strong>Berth–crane allocation plan</strong>
+          <span>Berth position and crane assignment over time</span>
+        </div>
+        <div class="figure-slot reveal">
+          <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
+          <strong>Solve time comparison</strong>
+          <span>MIP vs. PSO vs. DE by instance size</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="proj-section">
+    <div class="container">
+      <div class="proj-links">
+        <a class="btn" href="../index.html#research"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>All research</a>
+        <a class="btn btn-ghost" href="scout.html">Next: SCOUT<svg class="icon" aria-hidden="true"><use href="#i-chev-right"/></svg></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p class="footer-copy">© <span data-year>2026</span> Xinghao Peng</p>
+    <div class="footer-links">
+      <a href="mailto:xzp5060@psu.edu"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>Email</a>
+      <a href="../index.html"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Home</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

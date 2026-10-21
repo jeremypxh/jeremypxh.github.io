@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SCOUT: Drone Swarm Coverage (IEEE CASE 2025) · Xinghao Peng</title>
-  <meta name="description" content="SCOUT plans drone swarm coverage for demand that changes over space and time, such as a spreading wildfire. IEEE CASE 2025. Paper, demo video, framework and citation.">
+  <title>SCOUT: UAV Coverage Control (IEEE CASE 2025) · Xinghao Peng</title>
+  <meta name="description" content="SCOUT optimizes UAV deployment and coverage control under spatiotemporally heterogeneous demand, such as a spreading wildfire. IEEE CASE 2025. Paper, method, results, videos and citation.">
   <meta name="author" content="Xinghao Peng">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f7f7f4">
   <link rel="canonical" href="https://jeremypxh.github.io/projects/scout.html">
   <meta property="og:type" content="article">
   <meta property="og:title" content="SCOUT: Spatiotemporal Coverage for Optimal Unmanned Tasking">
-  <meta property="og:description" content="Drone swarm coverage for spatiotemporal demand. IEEE CASE 2025.">
+  <meta property="og:description" content="UAV deployment and coverage control under spatiotemporally heterogeneous demand. IEEE CASE 2025.">
   <meta property="og:url" content="https://jeremypxh.github.io/projects/scout.html">
   <meta property="og:image" content="https://jeremypxh.github.io/assets/img/projects/scout-poster.jpg">
   <meta name="twitter:card" content="summary_large_image">
@@ -143,19 +143,21 @@
     <div class="container prose-grid">
       <div class="prose reveal">
         <h2>Overview</h2>
-        <p>Drone swarms are increasingly used to watch over events that change across space and time: wildfires, disaster zones and environmental hazards. Spreading the drones evenly is simple, but it wastes coverage on quiet areas and under-serves the places where demand concentrates, and that demand keeps moving as the event unfolds.</p>
-        <p>SCOUT is a planning framework that decides where each unmanned aerial vehicle should be, so that the swarm's coverage follows the demand.</p>
+        <p>Spatiotemporal heterogeneity in demand makes UAV deployment and coverage control hard. During the January 2025 Los Angeles wildfires, satellite observations showed fire intensity varying sharply between areas within a single day and shifting as the fire evolved. Traditional methods typically assume uniform or static demand, which leads to suboptimal deployments.</p>
+        <p>SCOUT places UAVs and controls their coverage regions to minimize a weighted cost that combines spatial distance with demand density. This improves both resource accessibility and equity across the target area.</p>
         <h3>How it works</h3>
         <ol class="steps">
-          <li><strong>Sequential optimization.</strong> Drones are placed one at a time against the current demand map, building the swarm up drone by drone.</li>
-          <li><strong>Global refinement.</strong> The whole swarm is then adjusted together: each drone moves toward the demand-weighted centroid of the area it covers.</li>
+          <li><strong>Sequential optimization.</strong> A greedy, demand-aware seeding step. The first UAV starts at the demand-weighted center of mass of the area. Each new UAV is placed in the Voronoi region that carries the most demand and is optimized while the earlier UAVs stay fixed.</li>
+          <li><strong>Global refinement.</strong> All UAVs then move together by gradient descent. Each step moves every UAV toward the center of mass of its Voronoi region, with larger steps in regions that carry more demand, until the cost converges.</li>
+          <li><strong>Online updates.</strong> When demand changes, refinement restarts from the UAVs' current positions, so deployment and coverage adapt continuously.</li>
         </ol>
       </div>
       <aside class="panel facts-card reveal" aria-label="Paper details">
         <dl>
-          <div><dt>Venue</dt><dd>IEEE International Conference on Automation Science and Engineering (CASE) 2025, pp. 2103–2108</dd></div>
+          <div><dt>Venue</dt><dd>2025 IEEE 21st International Conference on Automation Science and Engineering (CASE), pp. 2103–2108</dd></div>
           <div><dt>Presented</dt><dd>Aug 19, 2025 · Los Angeles, CA</dd></div>
-          <div><dt>Topics</dt><dd>UAV swarms · coverage optimization · spatiotemporal demand · wildfire monitoring</dd></div>
+          <div><dt>Keywords</dt><dd>Heterogeneous demand · coverage control · decision-making · UAV deployment</dd></div>
+          <div><dt>Funding</dt><dd>National Science Foundation, IIS-2302834</dd></div>
           <div><dt>DOI</dt><dd><a href="https://doi.org/10.1109/CASE58245.2025.11163795" target="_blank" rel="noopener">10.1109/CASE58245.2025.11163795</a></dd></div>
         </dl>
       </aside>
@@ -168,9 +170,10 @@
       <!-- FIGURE SLOT. Replace the <div class="figure-slot"> with:
            <figure><img src="../assets/img/projects/scout/framework.png" alt="SCOUT framework" style="border-radius:16px">
            <figcaption class="cap">Your caption.</figcaption></figure> -->
+      <p class="proj-lede reveal">Sequential optimization gives a first deployment, global refinement improves it, and the tessellation is updated whenever the demand changes.</p>
       <div class="figure-slot reveal">
         <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
-        <strong>Framework figure</strong>
+        <strong>Fig. 2 · Online update framework</strong>
         <span>Add <code>assets/img/projects/scout/framework.png</code></span>
       </div>
     </div>
@@ -179,16 +182,21 @@
   <section class="proj-section">
     <div class="container">
       <h2 class="reveal">Results</h2>
+      <ul class="result-list reveal">
+        <li><strong>Benchmarking.</strong> On six simulated demand maps, each a mixture of 200 two-dimensional Gaussians on a 500 × 500 grid, with 20 to 100 UAVs, SCOUT beats 3D K-means and weighted Voronoi tessellation for every swarm size on both the accessibility score (the inverse of the weighted distance cost) and the equity score (the entropy of per-region accessibility).</li>
+        <li><strong>Continuous deployment.</strong> 100 UAVs start from a fixed station in one corner and follow the six demand maps as they evolve. The first deployment converges in 297 iterations, and the swarm re-converges quickly after each change in demand.</li>
+        <li><strong>Videos.</strong> The coverage process from the paper: <a href="https://youtu.be/nJRhtjwEvTg" target="_blank" rel="noopener">video 1</a> and <a href="https://youtu.be/oIisM2DDiFc" target="_blank" rel="noopener">video 2</a> (YouTube).</li>
+      </ul>
       <div class="two-up">
         <div class="figure-slot reveal">
           <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
-          <strong>Coverage result</strong>
-          <span>e.g. drone placements over the demand map</span>
+          <strong>Fig. 4 · Accessibility and equity</strong>
+          <span>SCOUT vs. 3D K-means and weighted Voronoi, 20–100 UAVs</span>
         </div>
         <div class="figure-slot reveal">
           <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
-          <strong>Comparison</strong>
-          <span>e.g. SCOUT versus baseline methods</span>
+          <strong>Fig. 5 · Coverage process of 100 UAVs</strong>
+          <span>Tessellation and UAV trajectories by iteration</span>
         </div>
       </div>
     </div>
@@ -213,7 +221,7 @@
 <pre id="bib-scout">@inproceedings{peng2025scout,
   title     = {{SCOUT}: Spatiotemporal Coverage for Optimal Unmanned Tasking},
   author    = {Peng, Xinghao and Liu, Runsang and Yang, Hui},
-  booktitle = {IEEE International Conference on Automation Science and Engineering (CASE)},
+  booktitle = {2025 IEEE 21st International Conference on Automation Science and Engineering (CASE)},
   pages     = {2103--2108},
   year      = {2025},
   doi       = {10.1109/CASE58245.2025.11163795}

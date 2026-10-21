@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wind Power Grid Integration · Xinghao Peng</title>
+  <meta name="description" content="Wind power ramp prediction with graph attention networks, copula-based scenario generation, and economic dispatch with deep reinforcement learning and multi-objective optimization.">
+  <meta name="author" content="Xinghao Peng">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f7f7f4">
+  <link rel="canonical" href="https://jeremypxh.github.io/projects/wind.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Wind Power Grid Integration">
+  <meta property="og:description" content="From wind power ramp prediction and scenario generation to economic dispatch.">
+  <meta property="og:url" content="https://jeremypxh.github.io/projects/wind.html">
+  <meta property="og:image" content="https://jeremypxh.github.io/assets/img/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../assets/img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script>
+    (function () {
+      var d = document.documentElement, t = null;
+      d.classList.add("js");
+      try { t = localStorage.getItem("theme"); } catch (e) {}
+      if (t !== "light" && t !== "dark") t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      d.setAttribute("data-theme", t);
+    })();
+  </script>
+  <script src="../assets/js/main.js" defer></script>
+</head>
+<body>
+<!-- icon sprite:start (generated, do not edit) -->
+<svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false">
+<!-- Icons: Lucide (ISC), Simple Icons (CC0), Font Awesome Free (CC BY 4.0) -->
+<symbol id="i-github" viewBox="0 0 24 24"><g fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></g></symbol>
+<symbol id="i-scholar" viewBox="0 0 24 24"><g fill="currentColor"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"></path></g></symbol>
+<symbol id="i-orcid" viewBox="0 0 24 24"><g fill="currentColor"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.025-5.325 5.025h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-2.016-1.284-3.722-4.097-3.722h-2.222z"></path></g></symbol>
+<symbol id="i-youtube" viewBox="0 0 24 24"><g fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path></g></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></g></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></g></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></g></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></g></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></g></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></g></symbol>
+<symbol id="i-arrow-up-right" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></g></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"></polygon></g></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></g></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></g></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></g></symbol>
+<symbol id="i-award" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path><circle cx="12" cy="8" r="6"></circle></g></symbol>
+<symbol id="i-arrow-left" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></g></symbol>
+<symbol id="i-chev-left" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></g></symbol>
+<symbol id="i-chev-right" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></g></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></g></symbol>
+<symbol id="i-grad" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"></path><path d="M22 10v6"></path><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path></g></symbol>
+<symbol id="i-briefcase" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></g></symbol>
+<symbol id="i-mic" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" x2="12" y1="19" y2="22"></line></g></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></g></symbol>
+<symbol id="i-code" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></g></symbol>
+<symbol id="i-slides" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h20"></path><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"></path><path d="m7 21 5-5 5 5"></path></g></symbol>
+<symbol id="i-image" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></g></symbol>
+<symbol id="i-video" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"></path><rect x="2" y="6" width="14" height="12" rx="2"></rect></g></symbol>
+<symbol id="i-arrow-up" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></g></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></g></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></g></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></g></symbol>
+<symbol id="i-linkedin" viewBox="0 0 448 512"><g fill="currentColor"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"></path></g></symbol>
+</svg>
+<!-- icon sprite:end -->
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="../index.html">
+      <img src="../assets/img/favicon.svg" alt="" width="30" height="30">
+      <span>Xinghao Peng</span>
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Primary">
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#news">News</a>
+      <a href="../index.html#research" class="is-active">Research</a>
+      <a href="../index.html#publications">Publications</a>
+      <a href="../index.html#experience">Experience</a>
+      <a href="../index.html#awards">Awards</a>
+      <a href="../index.html#teaching">Teaching</a>
+      <a href="../index.html#gallery">Gallery</a>
+    </nav>
+    <div class="header-actions">
+      <a class="btn btn-sm header-cv" href="../assets/cv/Xinghao_Peng_CV.pdf" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-file"/></svg>CV</a>
+      <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Switch to dark theme">
+        <svg class="icon i-moon" aria-hidden="true"><use href="#i-moon"/></svg>
+        <svg class="icon i-sun" aria-hidden="true"><use href="#i-sun"/></svg>
+      </button>
+      <button class="icon-btn menu-toggle" type="button" data-menu-toggle aria-controls="site-nav" aria-expanded="false" aria-label="Menu">
+        <svg class="icon i-open" aria-hidden="true"><use href="#i-menu"/></svg>
+        <svg class="icon i-close" aria-hidden="true"><use href="#i-x"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="proj-hero">
+    <div class="container">
+      <a class="back-link" href="../index.html#research"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>All research</a>
+      <p class="eyebrow">Shanghai Jiao Tong University · HKUST · 2021–2024</p>
+      <h1 class="proj-title"><span class="acc">Wind Power Grid Integration</span>: From Ramp Prediction to Economic Dispatch</h1>
+      <p class="proj-authors"><a href="../index.html">Xinghao Peng</a>, with Yanting Li and Fugee Tsung</p>
+      <p class="proj-affil">Shanghai Jiao Tong University · The Hong Kong University of Science and Technology</p>
+      <div class="proj-links">
+        <a class="btn btn-primary" href="https://doi.org/10.1016/j.renene.2024.121280" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg>Paper 2024</a>
+        <a class="btn" href="https://doi.org/10.16183/j.cnki.jsjtu.2022.180" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg>Paper 2023</a>
+        <a class="btn" href="https://doi.org/10.1016/j.renene.2022.11.002" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg>Paper 2022</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container" aria-label="Framework illustration">
+    <figure class="teaser">
+      <div class="media-frame media-frame--art">
+        <svg class="art" viewBox="0 0 480 270" role="img" aria-label="Illustration: wind flowing across a graph of wind farms, with a ramp event in the power curve">
+  <g class="art-stream"><polyline points="0,30.0 10,33.0 20,35.6 30,37.6 40,38.8 50,39.2 60,38.8 70,38.0 80,36.9 90,35.8 100,35.2 110,35.0 120,35.4 130,36.3 140,37.4 150,38.5 160,39.3 170,39.5 180,38.9 190,37.4 200,35.2 210,32.4 220,29.4 230,26.5 240,24.1 250,22.3 260,21.3 270,21.2 280,21.7 290,22.6 300,23.6 310,24.5 320,25.0 330,24.9 340,24.3 350,23.3 360,22.0 370,21.0 380,20.3 390,20.3 400,21.2 410,22.9 420,25.3 430,28.1 440,31.1 450,33.9 460,36.2 470,37.8 480,38.5"/><polyline points="0,76.4 10,77.7 20,78.2 30,77.7 40,76.5 50,74.9 60,73.0 70,71.4 80,70.1 90,69.4 100,69.3 110,69.7 120,70.3 130,70.8 140,71.0 150,70.7 160,69.6 170,67.8 180,65.3 190,62.6 200,59.7 210,57.2 220,55.3 230,54.2 240,54.0 250,54.7 260,56.0 270,57.7 280,59.4 290,60.9 300,62.0 310,62.4 320,62.3 330,61.8 340,61.2 350,60.7 360,60.6 370,61.2 380,62.5 390,64.6 400,67.2 410,70.0 420,72.8 430,75.2 440,76.9 450,77.7 460,77.7 470,76.9 480,75.4"/><polyline points="0,114.4 10,113.0 20,110.9 30,108.5 40,106.0 50,103.8 60,102.2 70,101.2 80,100.9 90,101.1 100,101.5 110,101.9 120,101.9 130,101.5 140,100.4 150,98.7 160,96.5 170,94.2 180,92.0 190,90.2 200,89.2 210,89.1 220,89.9 230,91.5 240,93.6 250,96.1 260,98.4 270,100.4 280,101.8 290,102.6 300,102.7 310,102.4 320,102.0 330,101.7 340,101.8 350,102.5 360,103.8 370,105.7 380,108.0 390,110.4 400,112.5 410,114.1 420,114.9 430,114.8 440,113.8 450,112.0 460,109.8 470,107.4 480,105.2"/><polyline points="0,142.4 10,139.5 20,136.7 30,134.4 40,132.8 50,132.0 60,131.9 70,132.3 80,133.0 90,133.6 100,134.0 110,133.9 120,133.1 130,131.9 140,130.3 150,128.7 160,127.3 170,126.5 180,126.4 190,127.3 200,129.0 210,131.4 220,134.2 230,137.0 240,139.7 250,141.8 260,143.1 270,143.7 280,143.7 290,143.2 300,142.5 310,141.9 320,141.8 330,142.2 340,143.1 350,144.5 360,146.2 370,147.9 380,149.2 390,149.8 400,149.6 410,148.5 420,146.6 430,144.1 440,141.3 450,138.5 460,136.0 470,134.1 480,133.0"/><polyline points="0,167.0 10,165.1 20,164.0 30,163.7 40,164.2 50,165.3 60,166.6 70,167.8 80,168.7 90,169.1 100,169.0 110,168.3 120,167.4 130,166.5 140,165.9 150,165.8 160,166.5 170,168.0 180,170.3 190,173.1 200,176.1 210,178.9 220,181.4 230,183.1 240,183.9 250,184.0 260,183.3 270,182.2 280,180.9 290,179.8 300,179.1 310,178.9 320,179.3 330,180.1 340,181.1 350,182.0 360,182.5 370,182.4 380,181.5 390,179.7 400,177.3 410,174.4 420,171.4 430,168.6 440,166.4 450,164.9 460,164.3 470,164.4 480,165.2"/><polyline points="0,197.4 10,198.0 20,199.4 30,201.3 40,203.3 50,205.2 60,206.7 70,207.6 80,207.9 90,207.7 100,207.2 110,206.7 120,206.5 130,206.9 140,208.0 150,209.7 160,212.0 170,214.7 180,217.4 190,219.8 200,221.5 210,222.4 220,222.4 230,221.6 240,220.1 250,218.1 260,216.2 270,214.5 280,213.2 290,212.6 300,212.5 310,212.8 320,213.4 330,213.8 340,213.8 350,213.2 360,211.9 370,210.0 380,207.5 390,204.7 400,202.1 410,199.8 420,198.3 430,197.6 440,197.8 450,198.9 460,200.5 470,202.4 480,204.3"/><polyline points="0,237.9 10,240.5 20,243.2 30,245.5 40,247.2 50,248.3 60,248.7 70,248.5 80,248.1 90,247.6 100,247.5 110,247.8 120,248.7 130,250.3 140,252.2 150,254.4 160,256.4 170,257.9 180,258.7 190,258.7 200,257.7 210,255.9 220,253.5 230,250.9 240,248.4 250,246.3 260,244.8 270,243.9 280,243.7 290,244.0 300,244.4 310,244.8 320,244.8 330,244.3 340,243.1 350,241.3 360,239.2 370,237.0 380,235.1 390,233.7 400,233.1 410,233.4 420,234.7 430,236.6 440,239.1 450,241.6 460,244.0 470,245.9 480,247.2"/></g>
+  <g class="art-edges art-directed"><path d="M80.9 90.5 L177.1 77.7" style="stroke-width:2.6"/><path d="M170.7 82.6 L177.1 77.7 L169.6 74.7" style="stroke-width:2"/><path d="M76.7 100.7 L120.1 157.7" style="stroke-width:1.4"/><path d="M112.7 154.5 L120.1 157.7 L119.0 149.7" style="stroke-width:1.4"/><path d="M138.9 166.4 L237.1 151.9" style="stroke-width:2.0"/><path d="M230.8 156.9 L237.1 151.9 L229.6 149.0" style="stroke-width:2.0"/><path d="M196.9 84.5 L241.8 139.9" style="stroke-width:1.2"/><path d="M234.3 137.0 L241.8 139.9 L240.5 131.9" style="stroke-width:1.2"/><path d="M200.9 77.7 L305.2 94.0" style="stroke-width:2.8"/><path d="M297.6 96.9 L305.2 94.0 L298.9 89.0" style="stroke-width:2"/><path d="M258.6 143.2 L307.8 104.1" style="stroke-width:1.6"/><path d="M304.8 111.6 L307.8 104.1 L299.9 105.3" style="stroke-width:1.6"/><path d="M260.6 153.1 L347.5 178.4" style="stroke-width:1.3"/><path d="M339.7 180.3 L347.5 178.4 L341.9 172.6" style="stroke-width:1.3"/><path d="M328.7 98.5 L407.3 117.0" style="stroke-width:2.4"/><path d="M399.6 119.3 L407.3 117.0 L401.4 111.5" style="stroke-width:2"/><path d="M367.6 174.1 L411.0 129.3" style="stroke-width:1.8"/><path d="M409.0 137.2 L411.0 129.3 L403.2 131.6" style="stroke-width:1.8"/></g>
+  <g class="art-nodes"><circle cx="70" cy="92" r="9"/><circle cx="128" cy="168" r="9"/><circle cx="190" cy="76" r="9"/><circle cx="250" cy="150" r="9"/><circle cx="318" cy="96" r="9"/><circle cx="360" cy="182" r="9"/><circle cx="420" cy="120" r="9"/></g>
+  <g class="art-blades"><path d="M70 92 L70.0 86.0"/><path d="M70 92 L64.8 95.0"/><path d="M70 92 L75.2 95.0"/><path d="M128 168 L128.0 162.0"/><path d="M128 168 L122.8 171.0"/><path d="M128 168 L133.2 171.0"/><path d="M190 76 L190.0 70.0"/><path d="M190 76 L184.8 79.0"/><path d="M190 76 L195.2 79.0"/><path d="M250 150 L250.0 144.0"/><path d="M250 150 L244.8 153.0"/><path d="M250 150 L255.2 153.0"/><path d="M318 96 L318.0 90.0"/><path d="M318 96 L312.8 99.0"/><path d="M318 96 L323.2 99.0"/><path d="M360 182 L360.0 176.0"/><path d="M360 182 L354.8 185.0"/><path d="M360 182 L365.2 185.0"/><path d="M420 120 L420.0 114.0"/><path d="M420 120 L414.8 123.0"/><path d="M420 120 L425.2 123.0"/></g>
+  <g class="art-spark"><polyline points="300,250 318,248 336,251 354,247 372,246 384,232 396,214 408,210 426,212 444,209 462,211"/></g>
+  <g class="art-ramp"><polyline points="372,246 384,232 396,214 408,210"/></g>
+</svg>
+        <span class="media-badge media-badge--light"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>Framework figure · coming soon</span>
+      </div>
+      <figcaption class="cap">Placeholder illustration: wind propagating across a graph of wind farms, with a ramp event in the power curve.</figcaption>
+    </figure>
+  </section>
+
+  <section class="proj-section">
+    <div class="container prose-grid">
+      <div class="prose reveal">
+        <h2>Overview</h2>
+        <p>Wind power is clean but variable. Short, steep swings in output, known as wind power ramp events, can upset the grid's supply–demand balance and cause wind curtailment and load shedding. Dispatch models also need wind power scenarios that capture correlations across wind farms and over time, and the resulting stochastic, multi-objective problems must be solved efficiently.</p>
+        <p>This project tackles all three: it predicts ramp events, generates realistic scenarios, and builds dispatch models that use the scenarios and respond to ramp events through demand response.</p>
+        <h3>How it works</h3>
+        <ol class="steps">
+          <li><strong>Ramp event prediction (WP-GAT).</strong> Ramps are detected in historical data with the L1-SW algorithm and described with power, meteorological, SCADA and ramp-frequency features. A spatio-temporal wind propagation graph records the direction and timing of wind moving between sites, and a graph attention network with a modified loss predicts upcoming ramps.</li>
+          <li><strong>Scenario generation.</strong> Spatiotemporal covariance functions capture correlations between wind farms and within each farm over time, with parameters estimated from empirical contour plots and a grid search. Pair copulas model the joint distribution of forecast and actual power, and Gaussian-process inverse sampling produces day-ahead scenarios that follow the forecast trend. A related study builds multi-farm scenarios with vine copulas, two-stage spatio-temporal sampling and conditional quantile sampling.</li>
+          <li><strong>Economic dispatch.</strong> The generated scenarios are tested in a two-stage dispatch model on the IEEE 6-bus system. For a microgrid, the two-stage dispatch is solved with deep reinforcement learning (DDPG) and an adaptive action-noise decay strategy. A multi-objective model then adds demand response to handle ramp events, balancing cost, emissions and the gap between day-ahead plans and actual operation, and is solved with Pareto-front and fuzzy optimization methods.</li>
+        </ol>
+      </div>
+      <aside class="panel facts-card reveal" aria-label="Project details">
+        <dl>
+          <div><dt>Where</dt><dd>Shanghai Jiao Tong University, 2021–2024 · HKUST, summer 2023</dd></div>
+          <div><dt>Advisors</dt><dd>Prof. Yanting Li (SJTU) · Prof. Fugee Tsung (HKUST)</dd></div>
+          <div><dt>Data</dt><dd>Baidu KDD Cup 2022 SDWPF dataset · NREL WIND Toolkit</dd></div>
+          <div><dt>Methods</dt><dd>Graph attention networks · copulas · Gaussian processes · deep reinforcement learning · multi-objective optimization</dd></div>
+        </dl>
+      </aside>
+    </div>
+  </section>
+
+  <section class="proj-section">
+    <div class="container">
+      <h2 class="reveal">Results</h2>
+      <ul class="result-list reveal">
+        <li><strong>Ramp prediction.</strong> On turbine data from the Baidu KDD Cup 2022 SDWPF dataset and 20 wind farms from NREL's WIND Toolkit, WP-GAT improves the critical success index by about 3.2% over random forest, 3.1% over gradient boosting and 6.1% over SVM classifiers across lead times.</li>
+        <li><strong>Scenario generation.</strong> On 25 wind farms from NREL's WIND Toolkit, the vine-copula method achieves better variogram scores than the benchmark models with a nearly identical energy score, and grouping the farms halves model-estimation time (73 to 36 minutes). The covariance-function scenarios were checked against several evaluation metrics.</li>
+        <li><strong>Dispatch.</strong> After training over many scenarios, the reinforcement-learning agent makes effective dispatch decisions under uncertainty, and using demand response to absorb ramp events proved both feasible and economical.</li>
+      </ul>
+      <div class="two-up">
+        <div class="figure-slot reveal">
+          <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
+          <strong>Spatio-temporal wind propagation graph</strong>
+          <span>How wind moves between sites</span>
+        </div>
+        <div class="figure-slot reveal">
+          <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
+          <strong>Multi-objective dispatch</strong>
+          <span>Pareto front of cost, emissions and plan deviation</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="proj-section">
+    <div class="container">
+      <h2 class="reveal">Papers</h2>
+      <ul class="result-list reveal">
+        <li><strong>A graph attention network with spatio-temporal wind propagation graph for wind power ramp events prediction.</strong> X. Peng, Y. Li, F. Tsung. <em>Renewable Energy</em> 236 (2024): 121280. <a href="https://doi.org/10.1016/j.renene.2024.121280" target="_blank" rel="noopener">DOI</a></li>
+        <li><strong>A wind power scenario generation method and its application based on spatiotemporal covariance functions.</strong> X. Peng, Y. Li. <em>Journal of Shanghai Jiao Tong University</em>, 2023. <a href="https://doi.org/10.16183/j.cnki.jsjtu.2022.180" target="_blank" rel="noopener">DOI</a></li>
+        <li><strong>Forecasting methods for wind power scenarios of multiple wind farms based on spatio-temporal dependency structure.</strong> Y. Li, X. Peng, Y. Zhang. <em>Renewable Energy</em> 201 (2022): 950–960. <a href="https://doi.org/10.1016/j.renene.2022.11.002" target="_blank" rel="noopener">DOI</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="proj-section">
+    <div class="container">
+      <div class="proj-links">
+        <a class="btn" href="../index.html#research"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>All research</a>
+        <a class="btn btn-ghost" href="port.html">Next: Berth and quay-crane allocation<svg class="icon" aria-hidden="true"><use href="#i-chev-right"/></svg></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p class="footer-copy">© <span data-year>2026</span> Xinghao Peng</p>
+    <div class="footer-links">
+      <a href="mailto:xzp5060@psu.edu"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>Email</a>
+      <a href="../index.html"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Home</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
